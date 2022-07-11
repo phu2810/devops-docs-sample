@@ -1,9 +1,9 @@
 pipeline {
-  // agent {
-  //   node {
-  //     label 'nodejs'
-  //   }
-  // }
+  agent {
+    node {
+      label 'nodejs'
+    }
+  }
   parameters{
      string(name:'TAG_NAME',defaultValue: '',description:'')
   }
