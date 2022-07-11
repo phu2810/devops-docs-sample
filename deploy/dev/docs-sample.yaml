@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-helloworld
-  namespace: kubesphere-docs-dev
+  namespace: kubesphere-sample-dev
 spec:
   selector:
       matchLabels:
