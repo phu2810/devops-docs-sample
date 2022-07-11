@@ -23,8 +23,6 @@ spec:
   selector:
     app: helloworld-workload
   clusterIP: 10.100.134.229
-  clusterIPs:
-    - 10.100.134.229
   type: LoadBalancer
   sessionAffinity: None
   externalTrafficPolicy: Cluster
