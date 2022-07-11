@@ -50,7 +50,7 @@ pipeline {
       }
       steps {
         input(id: 'deploy-to-dev', message: 'deploy to dev?')
-        kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+        kubernetesDeploy(configs: 'deploy/dev/docs-sample.yaml', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
       }
     }
   }
