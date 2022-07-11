@@ -1,21 +1,35 @@
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  labels:
-    app: kubesphere
-    component: ks-docs-sample-dev
-  name: ks-docs-sample-dev
+  name: helloworld-service
   namespace: kubesphere-docs-dev
+  labels:
+    app: helloworld-service
+  annotations:
+    kubesphere.io/alias-name: helloworld-service
+    kubesphere.io/creator: ws-admin
+    kubesphere.io/description: helloworld-service
+    service.beta.kubernetes.io/qingcloud-load-balancer-eip-ids: ''
+    service.beta.kubernetes.io/qingcloud-load-balancer-type: '0'
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
 spec:
   ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 80
-    nodePort: 30860
+    - name: http-80
+      protocol: TCP
+      port: 9999
+      targetPort: 8080
+      nodePort: 32567
   selector:
-    app: kubesphere
-    component: ks-docs-sample-dev
-    tier: backend
+    app: helloworld-workload
+  clusterIP: 10.100.134.229
+  clusterIPs:
+    - 10.100.134.229
+  type: LoadBalancer
   sessionAffinity: None
-  type: NodePort
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  allocateLoadBalancerNodePorts: true
+  internalTrafficPolicy: Cluster

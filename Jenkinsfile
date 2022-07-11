@@ -44,5 +44,14 @@ pipeline {
          }
        }
     }
+    stage('deploy to dev') {
+      when{
+        branch 'master'
+      }
+      steps {
+        input(id: 'deploy-to-dev', message: 'deploy to dev?')
+        kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+      }
+    }
   }
 }
