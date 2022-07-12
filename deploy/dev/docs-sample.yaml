@@ -16,6 +16,6 @@ spec:
       containers:
         - name: demo-helloworld
           image: phutest123/devops-docs-sample
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
