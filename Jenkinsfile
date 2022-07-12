@@ -57,7 +57,7 @@ pipeline {
             ]) {
               // sh 'envsubst < deploy/dev/docs-sample.yaml | kubectl apply -f -'
               // sh 'envsubst < deploy/dev/docs-sample-svc.yaml | kubectl apply -f -'
-              sh 'kubectl set image deployment/helloworld-workload helloworld-workload=$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER '
+              sh 'kubectl set image deployment/helloworld-workload container-yjv1eu=$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER '
           }
         }
       }
