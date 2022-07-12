@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: helloworld-service
-  namespace: kubesphere-docs-dev
+  namespace: kubesphere-sample-dev
   labels:
     app: helloworld-service
   annotations:
@@ -21,8 +21,7 @@ spec:
       targetPort: 8080
       nodePort: 32567
   selector:
-    app: helloworld-workload
-  clusterIP: 10.100.134.229
+    app: demo-helloworld
   type: LoadBalancer
   sessionAffinity: None
   externalTrafficPolicy: Cluster
