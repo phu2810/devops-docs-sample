@@ -55,7 +55,7 @@ pipeline {
               variable: 'KUBECONFIG')
             ]) {
               sh 'envsubst < deploy/dev/docs-sample.yaml | kubectl apply -f -'
-              sh 'envsubst < deploy/dev/docs-sample.yaml | kubectl apply -f -'
+              sh 'envsubst < deploy/dev/docs-sample-svc.yaml | kubectl apply -f -'
           }
         }
       }
