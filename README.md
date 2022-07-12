@@ -1,136 +1,51 @@
-# Documents for [KubeSphere](KubeSphere).
+# Spring Boot Hello World
 
-[![Build Status](https://travis-ci.org/kubesphere/docs.kubesphere.io.svg)](https://travis-ci.org/kubesphere/docs.kubesphere.io)
+**A simple Spring Boot app to send hello world message to a user**
 
-## Develop
+## How to Run Application
 
-### Setting up with git
-If you choose this way, we recommend you to install some requisites
-- git
-- node.js
-- yarn (or npm, `we recommend yarn`)
+**Start the application using any of the commands mentioned below**
 
-Check your requisites:
-```shell
-git --version
-node -v
-yarn -v
-```
+> **Note:** First two commands need to run inside the root folder of this project i.e inside the **spring-boot-hello-world** folder
 
-Then you are ready to go:
-```shell
-git clone https://github.com/kubesphere/docs.kubesphere.io.git
 
-cd docs.kubesphere.io
+- **Using maven** <br/>``` mvn spring-boot:run```
 
-yarn
 
-yarn develop
-```
+- **From jar file**
+  Create a jar file using '**mvn clean install**' command and then execute
+  <br/>```java -jar target/hello-world-1.0.1-SNAPSHOT.jar```
 
-## Contribute
 
-Tree of repo:
+- **Directly from IDE**
+  <br/>```Right click on HelloWorldApplication.java and click on 'Run' option```
+  <br/><br/>
 
-```bash
-├── content                                         // documents directory
-│   ├── express                                     // documents version
-│   │   ├── en                                      // documents language 
-│   │   │   └── KubeSphere-Installer-Guide.md       // document
-│   │   └── zh-CN
-│   │       └── KubeSphere-Installer-Guide.md
-│   ├── toc_express_en.json                         // table of contents, define the page navigation
-│   └── toc_express_zh-CN.json
-├── src
-└── static                                          // put document images here
-    └── daemonset_create_1.png
-```
+> **Note:** By default spring boot application starts on port number 8080. If port 8080 is occupied in your system then you can change the port number by uncommenting and updating the **server.port** property inside the **application.properties** file that is available inside the **src > main > resources** folder.
 
-If you want to edit the document, you can follow the ways below:
+<br/>
 
-### Add new version
- 
-1. Create a new directory called the new version name under the ``content`` directory
+**Send an HTTP GET request to '/hello' endpoint using any of the two methods**
 
-```shell
-cd content && mkdir version-xxxx
-```
+- **Browser or REST client**
+  <br/>```http://localhost:8080/hello```
 
-2. Create subdirectories for each language you want to support
 
-```shell
-cd content/version-xxxx && mkdir zh-CN en
-```
+- **cURL**
+  <br/>```curl --request GET 'http://localhost:8080/hello'```
 
-3. Create navigation files for each language of the new version under the ``content`` directory
 
-```shell
-cd content
+## How to Run Unit Test Cases
 
-touch toc_version-xxx_en.json toc_version-xxx_zh-CN.json
-```
+**Run the test cases using any of the commands mentioned below**
 
-### Edit navigation
+> **Note:** These commands need to run inside the root folder of this project i.e inside the **spring-boot-hello-world** folder
 
-navigation file example
+- **To run all the test cases**
+  <br/>```mvn test```
 
-- id: should match the format of ``{version}-{language}``
-- chapters: nav items
-- title: nav title
-- entry: nav entry, path to the document to display
-- entries: sub navs
 
-```json
-{
-  "id": "express-zh-CN",
-  "chapters": [
-    {
-      "title": "简介",
-      "entry": "./express/zh-CN/basic.md"
-    },
-    {
-      "title": "应用负载",
-      "entries": [
-        {
-          "entry": "./express/zh-CN/manage-deployments.md"
-        },
-        {
-          "entry": "./express/zh-CN/manage-statefulsets.md"
-        },
-        {
-          "entry": "./express/zh-CN/manage-daemonsets.md"
-        }
-      ],
-      "chapters": [
-      ]
-    }
-  ]
-}
-```
-
-### Edit Document
-
-document example
-
-```
----
-  title: 'document title, will show in nav'
----
-
-  ## title 1
-
-  content 1
-
-  ![](/image.png) 
-
-  this path will request ``/static/image.png``
-
-  ## title 2
-
-  ### subtitle 2.1
-    content 2.1
-  
-  ### title 3
-```
-
-`##` will be transformed to an anchor of the page, and will show in the nav.
+- **To run a particular test class**
+  <br/>```mvn -Dtest=HelloWorldControllerTest test```
+  <br/>or
+  <br/>```mvn -Dtest=HelloWorldApplicationTests test```

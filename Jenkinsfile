@@ -24,42 +24,43 @@ pipeline {
     stage('build & push snapshot') {
       steps {
         container('maven') {
-          sh 'docker build -t docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-          withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKERHUB_CREDENTIAL_ID" ,)]) {
-            sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
-            sh 'docker push  docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER '
-          }
+          sh 'mvn clean install'
+          // sh 'docker build -t docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+          // withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKERHUB_CREDENTIAL_ID" ,)]) {
+          //   sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+          //   sh 'docker push  docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER '
+          // }
         }
       }
     }
-    stage('push latest'){
-       when{
-         branch 'master'
-       }
-       steps{
-         container('maven'){
-           sh 'docker tag  docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
-           sh 'docker push  docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
-         }
-       }
-    }
-    stage('deploy to dev') {
-      when{
-        branch 'master'
-      }
-      steps {
-        container('maven') {
-          withCredentials([
-            kubeconfigFile(
-              credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-              variable: 'KUBECONFIG')
-            ]) {
-              // sh 'envsubst < deploy/dev/docs-sample.yaml | kubectl apply -f -'
-              // sh 'envsubst < deploy/dev/docs-sample-svc.yaml | kubectl apply -f -'
-              sh 'kubectl set image deployment/demo-helloworld demo-helloworld=$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER '
-          }
-        }
-      }
-    }
+    // stage('push latest'){
+    //    when{
+    //      branch 'master'
+    //    }
+    //    steps{
+    //      container('maven'){
+    //        sh 'docker tag  docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
+    //        sh 'docker push  docker.io/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
+    //      }
+    //    }
+    // }
+    // stage('deploy to dev') {
+    //   when{
+    //     branch 'master'
+    //   }
+    //   steps {
+    //     container('maven') {
+    //       withCredentials([
+    //         kubeconfigFile(
+    //           credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+    //           variable: 'KUBECONFIG')
+    //         ]) {
+    //           // sh 'envsubst < deploy/dev/docs-sample.yaml | kubectl apply -f -'
+    //           // sh 'envsubst < deploy/dev/docs-sample-svc.yaml | kubectl apply -f -'
+    //           sh 'kubectl set image deployment/demo-helloworld demo-helloworld=$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER '
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
