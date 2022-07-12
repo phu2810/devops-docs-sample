@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'maven'
+    }
+  }
   parameters{
      string(name:'TAG_NAME',defaultValue: '',description:'')
   }
@@ -47,12 +51,14 @@ pipeline {
       steps {
         // input(id: 'deploy-to-dev', message: 'deploy to dev?')
         // kubernetesDeploy(configs: 'deploy/dev/docs-sample.yaml', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
-        withCredentials([
-          kubeconfigFile(
-            credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-            variable: 'KUBECONFIG')
+        container('maven') {
+          withCredentials([
+            kubeconfigFile(
+              credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
+              variable: 'KUBECONFIG')
             ]) {
               sh 'envsubst < deploy/dev/docs-sample.yaml | kubectl apply -f -'
+          }
         }
       }
     }
